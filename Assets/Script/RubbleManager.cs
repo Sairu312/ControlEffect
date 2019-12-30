@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System.Collections;
 
 public class RubbleManager : MonoBehaviour
 {
@@ -13,6 +12,7 @@ public class RubbleManager : MonoBehaviour
     public GameObject Enemy;
     public float curvature;
     private float catchTime = 0f;
+    public float catchTimeSum = 2f;
     private int rubbleSetNum;
     private Vector3 rubbleSet;
     private Vector3 forward;
@@ -22,7 +22,6 @@ public class RubbleManager : MonoBehaviour
     public Vector3 rubbleSet4 = new Vector3(0,50,-50);
     private RaycastHit Hit;
     public bool hitFlag;
-    public bool shotFlag;
     private float persent;
 
     public float shootSpeed;
@@ -34,20 +33,28 @@ public class RubbleManager : MonoBehaviour
     private TutorialManagaer tutoSctipt;
     public Vector3 offset;
 
+    //Rubble用効果音達
     public AudioSource SESource;
     public AudioClip SEcall;
     public AudioClip SEcatch;
     public AudioClip SEshot;
-    private bool soudFrag;
+    private bool catchSoudFrag = false;
 
+    //Rubbleの状態変数
+    public RubbleStatus rubbleStatus;
+    public enum RubbleStatus
+    {
+        Call,//Rubbleを呼ぶ
+        Catch,//Rubbleを持つ
+        Shoot,//Rubbleを投げる
+        Wait//デフォルト　待機状態
+    }
 
 
     // Start is called before the first frame update
     void Start()
     {
-        SESource = GetComponent<AudioSource>();
-        enemyScript = Enemy.GetComponent<EnemyScript>();
-        tutoSctipt = tutorialManagaer.GetComponent<TutorialManagaer>();
+        RubbleInitialized();
     }
 
     // Update is called once per frame
@@ -59,71 +66,60 @@ public class RubbleManager : MonoBehaviour
 
     void ShootRubble()
     {
-        //コントローラーのトリガー判定
-        if((Input.GetAxis("R_Trigger")>0.9 || Input.GetMouseButton(0)) && !shootFlag)
+        //入力
+        RubbleInput();
+        
+        //Rubbleの状態ごとの処理
+        switch(rubbleStatus)
         {
-            shootFlag = true;
-            shotFlag = false;
-            hitFlag = false;
-            catchTime = 0f;
-            rubbleSetNum = (int)Mathf.Floor(Random.value * 4 + 1);
-            SESource.PlayOneShot(SEcall);
-        }else if(Input.GetAxis("R_Trigger") < -0.9 || Input.GetMouseButtonUp(0))
-        {
-            //SESource.PlayOneShot(SEshot);
-            shootFlag = false;
-        }
-
-        //キャッチ処理
-        if(shootFlag)
-        {
-            if(catchTime < 1)
-            {
-
+            case RubbleStatus.Wait:
                 forward = CalculationRubbleForward(rubbleSetNum);
-                CatchRubble(rubbleSet,forward,catchTime);
-                catchTime += 0.5f * Time.deltaTime;
-            }else
-            {
-                if(!soudFrag)
-                {
-                    SESource.PlayOneShot(SEcatch);
-                    soudFrag = true;
-                }
-                transform.position = player.transform.position + offset;
-            }
-        }
-        //シュート処理
-        else if(!shootFlag && !shotFlag)
-        {
-            Ray ray = new Ray (playerCamera.transform.position,playerCamera.transform.forward);
-            if(!hitFlag && Physics.Raycast(ray,out Hit,100f)){
-                //Physics.Raycast (ray,out Hit,100);
-                SESource.PlayOneShot(SEshot);
-                shootPosition = transform.position + offset;
-                hitPosition = Hit.point;
-                persent = 0f;
-                hitFlag = true;
-            }
-            persent += shootSpeed/(Time.deltaTime *Vector3.Magnitude(hitPosition-shootPosition));
-            transform.position = Vector3.Lerp(shootPosition, hitPosition, persent);
-            //Debug.Log (Hit.point);//デバッグログにヒットした場所を出す
-            //Debug.Log(persent);
-            if(hitPosition == transform.position)
-            {
-                    shotFlag = true;
-                    if(Hit.collider.tag == "Enemy")
-                    enemyScript.HP -= catchTime * 10;
-                    if(Hit.collider.tag == "BlueCube")
-                    tutoSctipt.hitBlueCube = true;
+                transform.position = rubbleSet;
+                catchSoudFrag = true;
+                break;
 
-            }
-        }
-        if(shotFlag)
-        {
-            transform.position = rubbleSet1;
+            case RubbleStatus.Call:
+                CatchRubble(rubbleSet,forward,catchTime / catchTimeSum);
+                catchTime += Time.deltaTime /catchTimeSum;
+                if(catchTime > catchTimeSum - 0.2f  && catchSoudFrag)
+                {
+                    //Debug.Log(catchTime/catchTimeSum);
+                    SESource.PlayOneShot(SEcatch);
+                    catchSoudFrag = false;
+                }
+                if(catchTime >= catchTimeSum)
+                    rubbleStatus = RubbleStatus.Catch;
+                break;
+
+            case RubbleStatus.Catch:
+                transform.position = playerCamera.transform.position + playerCamera.transform.rotation * offset;
+                break;
+
+            case RubbleStatus.Shoot:
+                Ray ray = new Ray (playerCamera.transform.position,playerCamera.transform.forward);
+                if(hitFlag && Physics.Raycast(ray,out Hit,200f)){
+                    SESource.PlayOneShot(SEshot);
+                    shootPosition = transform.position;
+                    hitPosition = Hit.point;
+                    persent = 0f;
+                    hitFlag = false;
+                }
+                persent += shootSpeed * Time.deltaTime /Vector3.Magnitude(hitPosition - shootPosition);
+                transform.position = Vector3.Lerp(shootPosition, hitPosition, persent);
+                
+                if(hitPosition == transform.position)
+                {
+                    if(Hit.collider.tag == "Enemy")
+                        enemyScript.HP -= catchTime * 10;
+                    if(Hit.collider.tag == "BlueCube")
+                        tutoSctipt.hitBlueCube = true;
+                    hitFlag = true;
+                    rubbleStatus = RubbleStatus.Wait;
+                }
+                break;
         }
     }
+
     //瓦礫の初期位置の前方を返す
     Vector3 CalculationRubbleForward(int i)
     {
@@ -148,13 +144,14 @@ public class RubbleManager : MonoBehaviour
                 return rubbleSet - playerCamera.transform.forward;       
         }
     }
+
     //瓦礫キャッチ
     void CatchRubble(Vector3 rubblePosition,Vector3 rubbleForward,float t)
     {
         Vector3 rubblePoint = GetPoint(rubblePosition,
                                        rubblePosition + rubbleForward,
-                                       player.transform.position + curvature * player.transform.forward + offset,
-                                       player.transform.position + offset,
+                                       playerCamera.transform.position + curvature * playerCamera.transform.forward + playerCamera.transform.rotation * offset,
+                                       playerCamera.transform.position + playerCamera.transform.rotation * offset,
                                        t);
         transform.position = rubblePoint;
     }
@@ -169,5 +166,32 @@ public class RubbleManager : MonoBehaviour
                 3f * oneMinusT * t * t * p2 +
                 t * t * t * p3;
     }  
+
+    //瓦礫用インプット
+    void RubbleInput()
+    {
+        //コントローラーのトリガー判定
+        if((Input.GetAxis("R_Trigger")　>　0.9 || Input.GetMouseButton(0)) && rubbleStatus == RubbleStatus.Wait)
+        {
+            if(rubbleStatus == RubbleStatus.Wait)rubbleStatus = RubbleStatus.Call;
+            catchTime = 0f;
+            rubbleSetNum = (int)Mathf.Floor(Random.value * 4 + 1);
+            SESource.PlayOneShot(SEcall);
+        }else if(Input.GetAxis("R_Trigger") < -0.9 || Input.GetMouseButtonUp(0))
+        {
+            if(rubbleStatus != RubbleStatus.Wait)rubbleStatus = RubbleStatus.Shoot;
+        }
+    }
+
+    //初期化
+    void RubbleInitialized()
+    {
+        SESource = GetComponent<AudioSource>();
+        enemyScript = Enemy.GetComponent<EnemyScript>();
+        tutoSctipt = tutorialManagaer.GetComponent<TutorialManagaer>();
+        rubbleStatus = RubbleStatus.Wait;
+        rubbleSetNum = 1;
+        hitFlag = true;
+    }
 
 }

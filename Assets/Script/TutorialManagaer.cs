@@ -6,9 +6,11 @@ using UnityEngine.SceneManagement;
 
 public class TutorialManagaer : MonoBehaviour
 {
+    public bool debugTutorial = false;
     public bool tutorial = false;
     public GameObject player;
     public GameObject enemy;
+    public GameObject rubble;
     public GameObject bossHpSlider;
     public Text telop;
     public Text subTelop;
@@ -33,7 +35,7 @@ public class TutorialManagaer : MonoBehaviour
     void Start()
     {
         tutorial = false;
-        if(TextManager.GetSelect() == 1)tutorial = true;
+        if(TextManager.GetSelect() == 1 && debugTutorial)tutorial = true;
         if(tutorial)
         {
             SetUpTutorial();
@@ -90,6 +92,7 @@ public class TutorialManagaer : MonoBehaviour
                     telopNum = 1;
                 }
                 break;
+
             case 1:
                 if((Input.GetKeyDown("joystick button 17") || Input.GetKeyDown(KeyCode.E)))
                 {
@@ -99,6 +102,7 @@ public class TutorialManagaer : MonoBehaviour
                 telop.text = "こんにちは オブジェクト173";
                 subTelop.text = "Bボタン(E)で進む";
                 break;
+
             case 2:
                 if((Input.GetKeyDown("joystick button 16") || Input.GetKeyDown(KeyCode.Space)) && CountTime > 1f && !telopChange)
                 {
@@ -113,6 +117,7 @@ public class TutorialManagaer : MonoBehaviour
                 telop.text = "聞こえていたらジャンプをしてくれ";
                 subTelop.text = "Aボタン(Space)でジャンプ";
                 break;
+
             case 3:
                 if(CountTime > 3f)
                 {
@@ -126,33 +131,38 @@ public class TutorialManagaer : MonoBehaviour
                 telop.text = "いい調子だ　こちらを見てくれるか？";
                 subTelop.text = "左スティックで移動し\n右スティックで窓を見る";
                 break;
+
             case 4:
                 if(Input.GetKeyDown("joystick button 17")|| Input.GetKeyDown(KeyCode.E) && CountTime > 1f)
                 {
                     telopNum = 5;
                 }
-                telop.text = "君の正面がどこか見分けられない\nという点以外はいいとしよう";
+                telop.text = "まあ，いいとしよう";
                 subTelop.text = "Bボタン(E)で進む";
                 break;
+
             case 5:
                 if(Input.GetAxis("R_Trigger") > 0.9 || Input.GetMouseButton(0))
                 {
-                    if(CountTime > 2.5f)telopNum = 6;
+                    if(CountTime > rubble.GetComponent<RubbleManager>().catchTimeSum)telopNum = 6;
                 }else CountTime = 0;
                 telop.text = "ではオブジェクト173\n君の変異能力を見せてくれ";
                 subTelop.text = "右トリガー(RT)長押しで\n弾を呼ぶ";
                 break;
+
             case 6:
                 if((Input.GetKeyDown("joystick button 17") || Input.GetKeyDown(KeyCode.E)))telopNum = 7;
                 
                 telop.text = "今日は赤色のようだね";
                 subTelop.text = "右トリガーを離して飛ばす\nBボタン(E)で進む";
                 break;
+
             case 7:
                 if((Input.GetKeyDown("joystick button 17") || Input.GetKeyDown(KeyCode.E)))telopNum = 8;
                 telop.text = "今日の実験は\nオブジェクト049とのクロステストだ";
                 subTelop.text = "Bボタン(E)で進む";
                 break;
+
             case 8:
                 if((Input.GetKeyDown("joystick button 17") || Input.GetKeyDown(KeyCode.E)))
                 {
@@ -162,6 +172,7 @@ public class TutorialManagaer : MonoBehaviour
                 telop.text = "オブジェクト049を暴走状態にした\nその状態での相互反応を確認する";
                 subTelop.text = "Bボタン(E)で進む";
                 break;
+
             case 9:
                 if(hitBlueCube)
                 {
@@ -171,33 +182,37 @@ public class TutorialManagaer : MonoBehaviour
                 telop.text = "準備ができたら\n青いオブジェクトを攻撃してくれ";
                 subTelop.text = "青いオブジェクトに\n攻撃する";
                 break;
+
             case 10:
                 GoToMain();
                 telop.text = "オブジェクト049を倒せ！";
                 subTelop.text = "";
                 if(CountTime > 5f)telopNum = 11;
                 break;
+
             case 12:
                 telopNum = 13;
                 CountTime = 0;
                 telop.text = "実験終了";
                 break;
+
             case 13:
-            Debug.Log(CountTime);
                 if(CountTime > 5f)
                 {
                     telopNum = 14;
                     CountTime = 0;
                 }
                 break;
+
             case 14:
                 if(CountTime > 5f)
                 {
                     telopNum = 15;
                     CountTime = 0;
                 }
-                telop.text = "大変興味深いデーターが取れた";
+                telop.text = "大変興味深いデータが取れた";
                 break;
+
             case 15:
                 if(CountTime > 5f)
                 {
@@ -206,6 +221,7 @@ public class TutorialManagaer : MonoBehaviour
                 } 
                 telop.text = "安全を確認次第　再収容を行う";
                 break;
+
             case 16:
                 if(CountTime > 5f)
                 {
@@ -213,10 +229,12 @@ public class TutorialManagaer : MonoBehaviour
                 }
                 telop.text = "実験終了";
                 break;
+
             case 17:
                 panel.color = new Color(0,0,0,panel.color.a + Time.deltaTime);
                 if(panel.color.a > 0.99) SceneManager.LoadScene("GameClear");
                 break;
+
             default:
                 telop.text = "";
                 subTelop.text = "";

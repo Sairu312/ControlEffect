@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 8585218704763086566}
   - component: {fileID: 1361061267869829547}
   - component: {fileID: 7257510304988084718}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Root
   m_TagString: Arm
   m_Icon: {fileID: 0}
@@ -140,7 +140,7 @@ GameObject:
   - component: {fileID: 14397981853304097}
   - component: {fileID: 4640608883833714505}
   - component: {fileID: 1919712729072087412}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Bone
   m_TagString: Arm
   m_Icon: {fileID: 0}

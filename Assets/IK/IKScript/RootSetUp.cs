@@ -12,6 +12,7 @@ public class RootSetUp : MonoBehaviour
     Transform rootTransform;
     public int boonNum;
     public List<GameObject> jointList;
+    public float bornLength;
 
     // Start is called before the first frame update
     void Start()
@@ -35,7 +36,7 @@ public class RootSetUp : MonoBehaviour
     {
         GameObject obj = (GameObject)Instantiate(bornObject,Vector3.zero,Quaternion.Euler(Vector3.zero));
         obj.transform.parent = parentTransform;
-        obj.transform.localPosition = new Vector3(0, 0, 2);
+        obj.transform.localPosition = new Vector3(0, 0, bornLength);
         rootTransform = obj.transform;
         return obj;
     }
@@ -45,7 +46,7 @@ public class RootSetUp : MonoBehaviour
         GameObject obj = (GameObject)Instantiate(tipObject);
         obj.name = "Tip";
         obj.transform.parent = parentTransform;
-        obj.transform.localPosition = new Vector3(0, 0, 2);
+        obj.transform.localPosition = new Vector3(0, 0, bornLength);
         return obj;
     }
 

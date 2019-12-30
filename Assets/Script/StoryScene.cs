@@ -20,7 +20,7 @@ public class StoryScene : MonoBehaviour
     {
         coutTime  += Time.deltaTime;
         text.color = new Color(1,1,1,text.color.a + Time.deltaTime * 0.3f);
-        if((Input.GetKeyDown("joystick button 17") || Input.GetKeyDown(KeyCode.E))&& coutTime > 5f)
+        if((Input.GetKeyDown("joystick button 17") || Input.GetKeyDown(KeyCode.E))&& coutTime > 2f)
         next = true;
         if(next)
         {

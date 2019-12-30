@@ -19,7 +19,7 @@ public class EnemyScript : MonoBehaviour
     private Vector3 originPosition;
     private Vector3 thrustPosition;
     public GameObject GameManager;
-    public Light light;
+    public Light alartLight;
 
     private bool positionLockFlag = false;
 
@@ -30,6 +30,7 @@ public class EnemyScript : MonoBehaviour
     public AudioClip roll;
     public AudioClip breakBoss;
     public bool soudFlag;
+    public bool tipHitFlag = false;
 
 
     public enum EnemyStatus{
@@ -43,14 +44,7 @@ public class EnemyScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        AudioSource[] audioS =GetComponents<AudioSource>();
-        audioSource = audioS[0];
-        SESource = audioS[1];
-        BreakSource = audioS[2];
-        audioSource.enabled = false;
-        BreakSource.enabled = false;
-        nowStatus = EnemyStatus.Wait;
-        MaxHP = HP;
+        EnemyInitialize();
     }
 
     // Update is called once per frame
@@ -61,6 +55,13 @@ public class EnemyScript : MonoBehaviour
         positionLockFlag = false;
 
         CountTimeStatus();
+        HPback();
+        EnemyAction();
+    }
+
+    void EnemyAction()
+    {
+        //状態遷移
         switch(nowStatus)
         {
             case EnemyStatus.Wait://待ち
@@ -78,13 +79,14 @@ public class EnemyScript : MonoBehaviour
                 BackWait(1f);
                 break;
         }
-        HPback();
+
+        //HPが0になった時の処理
         if(HP<=0)
         {
             nowStatus = EnemyStatus.Wait;
             BreakSource.enabled=true;
             audioSource.enabled = false;
-            light.color = new Color(1f,1f,1f,1f);
+            alartLight.color = new Color(1f,1f,1f,1f);
             transform.localScale -= Vector3.one * Time.deltaTime / 2f;
             if(transform.localScale.x < 0)
             {
@@ -92,13 +94,14 @@ public class EnemyScript : MonoBehaviour
                 GameManager.GetComponent<TutorialManagaer>().telopNum = 12;
             }
         }
-        else if(HP < 50)
+
+        //敵のHPが半分を過ぎた時の処理
+        else if(HP < MaxHP/2f)
         {
-            //audioSource.PlayOneShot(alert);
             audioSource.enabled = true;
             countTime3 += Time.deltaTime;
             if(transform.localScale.x < 2.5f)transform.localScale += Vector3.one * Time.deltaTime / 0.5f;
-            light.color = new Color(Mathf.Sin(countTime2 * 10f)/4+0.75f,0f,0f,1f);
+            alartLight.color = new Color(Mathf.Sin(countTime2 * 10f)/4+0.75f,0f,0f,1f);
         }
     }
 
@@ -126,19 +129,25 @@ public class EnemyScript : MonoBehaviour
     //突き(攻撃)
     void Thrust(float thrustTime,float motionTime)
     {
-        if(thrustTime - countTime > 0f)
+        if(!tipHitFlag && thrustTime - countTime > 0)
+        {
             IKtarget1.transform.position = Vector3.Slerp(originPosition,thrustPosition,countTime/thrustTime);
+        }
         else if(motionTime - countTime > 0f)
         {
+            if(!tipHitFlag)
+            {
+                IKtarget1.transform.position = thrustPosition;
+            }
             SESource.volume =  0.2f;
             SESource.PlayOneShot(bomb);
-            IKtarget1.transform.position = thrustPosition;
         }else nowStatus = EnemyStatus.BackWait;
     }
 
     //待ちに戻る
     void BackWait(float motionTime)
     {
+        tipHitFlag = false;
         if(motionTime - countTime > 0f)
             IKtarget1.transform.position = Vector3.Slerp(thrustPosition,originPosition,countTime/motionTime);
         else nowStatus = EnemyStatus.Wait;
@@ -169,4 +178,16 @@ public class EnemyScript : MonoBehaviour
         HPbar.GetComponent<Slider>().value = HP/MaxHP;
     }
 
+    //初期化
+    void EnemyInitialize()
+    {
+        AudioSource[] audioS =GetComponents<AudioSource>();
+        audioSource = audioS[0];
+        SESource = audioS[1];
+        BreakSource = audioS[2];
+        audioSource.enabled = false;
+        BreakSource.enabled = false;
+        nowStatus = EnemyStatus.Wait;
+        MaxHP = HP;
+    }
 }

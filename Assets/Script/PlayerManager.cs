@@ -6,10 +6,10 @@ using UnityEngine.UI;
 public class PlayerManager : MonoBehaviour
 {
     [SerializeField]
-    private GameObject camera;
+    private GameObject playerCamera;
     [SerializeField]
     private GameObject cameraOrigin;
-    public GameObject HPbar;
+    public GameObject hpBar;
     public GameObject playerModel;
     public Vector3 offset;
     public float aimSpeedV = 1f;
@@ -20,12 +20,12 @@ public class PlayerManager : MonoBehaviour
     private Vector3 moveDirection = Vector3.zero;
     private float moveSpeed = 10f;
     private float jumpPower = 20f;
-    private float rotationSpeed = 2f;
+    //private float rotationSpeed = 2f;
     private float rotValueH = 0f;
     private float rotValueV = 0f;
     private Vector3 colliderDirection;
     public GameObject gameManager;
-    public float coutTime2 = 0;
+    private float coutTime2 = 0;
     
 
     public float HP = 100;
@@ -35,34 +35,30 @@ public class PlayerManager : MonoBehaviour
     void Start()
     {
         InitializeComponent();
-        MaxHP = HP;
     }
 
     // Update is called once per frame
     void Update()
     {
         coutTime2 += Time.deltaTime;
-        if(HP>0){
-        CharacterInput();
-        CharacterMove();
+        if(HP>0)
+        {
+            CharacterInput();
+            CharacterMove();
+        }
+        if(HP <= 0 && !dead)
+        {
+            PlayerDead();
         }
         cameraOrigin.transform.position = transform.position + offset;
         HPback();
-        if(HP <= 0 && !dead)
-        {
-            playerModel.transform.localScale -= Vector3.one * Time.deltaTime;
-            if(playerModel.transform.localScale.x < 0)
-            {
-                gameManager.GetComponent<TutorialManagaer>().telopNum = 12;
-                dead = true;
-            }
-        }
     }
 
     void InitializeComponent()
     {
         characterController = GetComponent<CharacterController>();
         cameraOrigin.transform.position = transform.position + offset;
+        MaxHP = HP;
     }
 
 
@@ -110,11 +106,11 @@ public class PlayerManager : MonoBehaviour
     {
         //Debug.Log(camera.transform.forward);
         float angle = Mathf.PI / 2f;
-        if(camera.transform.forward.z != 0)
+        if(playerCamera.transform.forward.z != 0)
         {
-            angle = Mathf.Atan2(camera.transform.forward.z, camera.transform.forward.x);
+            angle = Mathf.Atan2(playerCamera.transform.forward.z, playerCamera.transform.forward.x);
         }
-        else if(camera.transform.forward.x <0)
+        else if(playerCamera.transform.forward.x <0)
             angle = -Mathf.PI / 2f;
         return angle;
     }
@@ -130,7 +126,6 @@ public class PlayerManager : MonoBehaviour
                 coutTime2 = 0;
                 HP-=10;
             }
-            Debug.Log("yossha");
         }
         if(collider.gameObject.CompareTag("Arm"))
         {
@@ -140,7 +135,6 @@ public class PlayerManager : MonoBehaviour
                 coutTime2 =0;
                 HP -= 10;
             }
-            Debug.Log("Arm");
         }
     }
 
@@ -152,6 +146,16 @@ public class PlayerManager : MonoBehaviour
 
     void HPback()
     {
-        HPbar.GetComponent<Slider>().value = HP/MaxHP;
+        hpBar.GetComponent<Slider>().value = HP/MaxHP;
+    }
+    
+    void PlayerDead()
+    {
+        playerModel.transform.localScale -= Vector3.one * Time.deltaTime;
+        if(playerModel.transform.localScale.x < 0)
+        {
+            gameManager.GetComponent<TutorialManagaer>().telopNum = 12;
+            dead = true;
+        }
     }
 }
