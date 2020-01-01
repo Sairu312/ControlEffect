@@ -22,9 +22,9 @@ public class DissolveManager : MonoBehaviour
         mat1 = wall1.GetComponent<Renderer>();
         mat2 = wall2.GetComponent<Renderer>();
         mat3 = wall3.GetComponent<Renderer>();
-        col1 = wall1.GetComponent<BoxCollider>();
-        col2 = wall2.GetComponent<BoxCollider>();
-        col3 = wall3.GetComponent<BoxCollider>();
+        col1 = wall1.GetComponent<MeshCollider>();
+        col2 = wall2.GetComponent<MeshCollider>();
+        col3 = wall3.GetComponent<MeshCollider>();
     }
 
     // Update is called once per frame

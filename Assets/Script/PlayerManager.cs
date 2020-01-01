@@ -17,10 +17,10 @@ public class PlayerManager : MonoBehaviour
     public float mouseAimSpeedV = 5f;
     public float mouseAimSpeedH = 5f;
     private CharacterController characterController;
-    private Vector3 moveDirection = Vector3.zero;
+    public  Vector3 moveDirection = Vector3.zero;
     private float moveSpeed = 10f;
     private float jumpPower = 20f;
-    //private float rotationSpeed = 2f;
+    private float rotationSpeed = 0.2f;
     private float rotValueH = 0f;
     private float rotValueV = 0f;
     private Vector3 colliderDirection;
@@ -31,6 +31,8 @@ public class PlayerManager : MonoBehaviour
     public float HP = 100;
     private float MaxHP = 100;
     private bool dead = false;
+
+    public bool defenseFlag = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -89,9 +91,16 @@ public class PlayerManager : MonoBehaviour
         {
             moveDirection.x = (input.z * Mathf.Cos(GetAngle()) - input.x * Mathf.Sin(-GetAngle())) * moveSpeed;
             moveDirection.z = (-input.x * Mathf.Cos(-GetAngle()) + input.z * Mathf.Sin(GetAngle())) * moveSpeed;
+            Vector3 playerLookAt = new Vector3(moveDirection.x, 0, moveDirection.z);
+            Quaternion playerLookAtRotation = Quaternion.LookRotation(playerLookAt);
+            transform.rotation = Quaternion.Slerp (this.transform.rotation, playerLookAtRotation, rotationSpeed);
         }
-
-        transform.LookAt(transform.position + new Vector3(moveDirection.x,0,moveDirection.z));
+        /*
+        Vector3 playerLookAt = new Vector3(moveDirection.x, 0, moveDirection.z);
+        Quaternion playerLookAtRotation = Quaternion.LookRotation(playerLookAt);
+        transform.rotation = Quaternion.Slerp (this.transform.rotation, playerLookAtRotation, rotationSpeed);
+        //transform.LookAt(transform.position + new Vector3(moveDirection.x,0,moveDirection.z));
+        */
         
         moveDirection += colliderDirection;
         colliderDirection = Vector3.zero;
@@ -120,20 +129,24 @@ public class PlayerManager : MonoBehaviour
     {
         if(collider.gameObject.CompareTag("Enemy"))
         {
-            hukitobasi(collider.gameObject,0.1f);
             if(coutTime2 > 1f)
             {
+                hukitobasi(collider.gameObject,30f);
                 coutTime2 = 0;
-                HP-=10;
+                if(!defenseFlag){
+                    HP-=10;
+                }
             }
         }
         if(collider.gameObject.CompareTag("Arm"))
         {
-            colliderDirection += new Vector3(0,1,0);
             if(coutTime2 > 1f)
             {
+                colliderDirection += new Vector3(0,30,0);
                 coutTime2 =0;
-                HP -= 10;
+                if(!defenseFlag){
+                    HP -= 10;
+                }
             }
         }
     }

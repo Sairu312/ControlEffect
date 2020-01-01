@@ -20,6 +20,8 @@ public class EnemyScript : MonoBehaviour
     private Vector3 thrustPosition;
     public GameObject GameManager;
     public Light alartLight;
+    public GameObject lightingManager;
+    private LightingManager lightingManagerScript;
 
     private bool positionLockFlag = false;
 
@@ -86,7 +88,8 @@ public class EnemyScript : MonoBehaviour
             nowStatus = EnemyStatus.Wait;
             BreakSource.enabled=true;
             audioSource.enabled = false;
-            alartLight.color = new Color(1f,1f,1f,1f);
+            //alartLight.color = new Color(1f,1f,1f,1f);
+            lightingManagerScript.alart = false;
             transform.localScale -= Vector3.one * Time.deltaTime / 2f;
             if(transform.localScale.x < 0)
             {
@@ -101,7 +104,8 @@ public class EnemyScript : MonoBehaviour
             audioSource.enabled = true;
             countTime3 += Time.deltaTime;
             if(transform.localScale.x < 2.5f)transform.localScale += Vector3.one * Time.deltaTime / 0.5f;
-            alartLight.color = new Color(Mathf.Sin(countTime2 * 10f)/4+0.75f,0f,0f,1f);
+            lightingManagerScript.alart = true;
+            //alartLight.color = new Color(Mathf.Sin(countTime2 * 10f)/4+0.75f,0f,0f,1f);
         }
     }
 
@@ -182,6 +186,7 @@ public class EnemyScript : MonoBehaviour
     void EnemyInitialize()
     {
         AudioSource[] audioS =GetComponents<AudioSource>();
+        lightingManagerScript = lightingManager.GetComponent<LightingManager>();
         audioSource = audioS[0];
         SESource = audioS[1];
         BreakSource = audioS[2];
