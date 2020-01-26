@@ -3,7 +3,7 @@
     Properties
     {
         _MainTex ("Albedo (RGB)", 2D) = "white" {}
-        
+        _Color ("Color",Color) = (1,1,1,1)
 
     }
     SubShader
@@ -131,6 +131,7 @@
 
             sampler2D _MainTex;
             float4 _MainTex_ST;
+            fixed4 _Color;
 
 
 
@@ -169,6 +170,7 @@
             {
                 // sample the texture
                 fixed4 col = tex2D(_MainTex, i.uv);
+                col *= _Color;
                 // apply fog
                 UNITY_APPLY_FOG(i.fogCoord, col);
                 return col;

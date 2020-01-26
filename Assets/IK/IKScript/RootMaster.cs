@@ -58,7 +58,10 @@ public class RootMaster : MonoBehaviour
 
     public void IKRotation()//関節と先端から関節とターゲットまでの回転を取得して回転させる．これを各関節に使用することでIKとして働く．
     {
-        if(tipObject == null) tipObject = GameObject.Find("Tip");
+        if(tipObject == null){
+            tipObject = GameObject.Find("Tip");
+            return;
+        }
         var qTarget = Quaternion.LookRotation(targetObject.transform.position - transform.position);
         var qTip = Quaternion.LookRotation(tipObject.transform.position - transform.position);
         var qTargetToTip = qTarget * Quaternion.Inverse(qTip);
