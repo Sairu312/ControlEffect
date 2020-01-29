@@ -142,7 +142,7 @@ public class TutorialManagaer : MonoBehaviour
                 break;
 
             case 5:
-                if(Input.GetAxis("R_Trigger") > 0.9 || Input.GetMouseButton(0))
+                if(XBoxInputManager.Instance.XBoxInputAxis(XBoxAxisCode.RTrigger) > 0.9 || Input.GetMouseButton(0))
                 {
                     if(CountTime > rubble.GetComponent<RubbleManager>().catchTimeSum)telopNum = 6;
                 }else CountTime = 0;

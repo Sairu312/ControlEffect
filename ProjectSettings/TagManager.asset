@@ -9,6 +9,7 @@ TagManager:
   - Arm
   - Window
   - BlueCube
+  - Rubble
   layers:
   - Default
   - TransparentFX

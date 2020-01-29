@@ -29,8 +29,8 @@ public class RubbleManager : MonoBehaviour
     private Vector3 shootPosition;
     private Vector3 hitPosition;
     private EnemyScript enemyScript;
-    public GameObject tutorialManagaer;
-    private TutorialManagaer tutoSctipt;
+    public GameObject tutorialManagaer;//これは不適切他のスクリプトに回す
+    private TutorialManagaer tutoSctipt;//これも
     public Vector3 offset;
 
     //Rubble用効果音達
@@ -42,7 +42,7 @@ public class RubbleManager : MonoBehaviour
 
     //Rubbleの状態変数
     public RubbleStatus rubbleStatus;
-    public GameObject enemyModel;
+    public GameObject enemyModel;//これも
     public enum RubbleStatus
     {
         Call,//Rubbleを呼ぶ
@@ -110,6 +110,7 @@ public class RubbleManager : MonoBehaviour
                 
                 if(hitPosition == transform.position)
                 {
+                    
                     if(Hit.collider.tag == "Enemy")
                     {
                         enemyScript.HP -= catchTime * 10;
@@ -118,6 +119,7 @@ public class RubbleManager : MonoBehaviour
 
                     if(Hit.collider.tag == "BlueCube")
                         tutoSctipt.hitBlueCube = true;
+                    
                     hitFlag = true;
                     rubbleStatus = RubbleStatus.Wait;
                 }
@@ -190,7 +192,7 @@ public class RubbleManager : MonoBehaviour
             catchTime = 0f;
             rubbleSetNum = (int)Mathf.Floor(Random.value * 4 + 1);
             SESource.PlayOneShot(SEcall);
-        }else if((XBoxInputManager.Instance.XBoxInputAxis(XBoxAxisCode.RTrigger) < -0.9 || Input.GetMouseButtonUp(0)) && rubbleStatus != RubbleStatus.Wait)
+        }else if((XBoxInputManager.Instance.XBoxInputAxis(XBoxAxisCode.RTrigger) < -0.9 && !Input.GetMouseButton(0)) && rubbleStatus != RubbleStatus.Wait)
         {
             rubbleStatus = RubbleStatus.Shoot;
         }

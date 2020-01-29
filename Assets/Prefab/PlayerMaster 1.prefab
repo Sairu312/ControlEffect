@@ -66,7 +66,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d76ff4e00b6343cfb0d52f3e6898786, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  camera: {fileID: 2112906608983748723}
+  playerCamera: {fileID: 0}
   cameraOrigin: {fileID: 2112906608898654780}
   hpBar: {fileID: 0}
   playerModel: {fileID: 2112906609798739259}
@@ -75,8 +75,10 @@ MonoBehaviour:
   aimSpeedH: 5
   mouseAimSpeedV: 5
   mouseAimSpeedH: 5
+  moveDirection: {x: 0, y: 0, z: 0}
   gameManager: {fileID: 0}
   HP: 100
+  defenseFlag: 0
 --- !u!54 &6070272162686683553
 Rigidbody:
   m_ObjectHideFlags: 0

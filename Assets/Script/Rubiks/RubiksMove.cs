@@ -2,21 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-enum RotAxis
+public enum RotAxis
 {
     X,
     Y,
     Z
 }
 
-enum RotPosition
+public enum RotPosition
 {
     Center,
     Right,
     Left
 }
 
-enum RotDirection
+public enum RotDirection
 {
     Forward,
     Back
@@ -31,9 +31,9 @@ public class RubiksMove : MonoBehaviour
     public bool isRotate = false;
     public float rotTime = 1;
     public bool perfect = true;
-    [SerializeField]RotAxis rotationAxis = RotAxis.X; 
-    [SerializeField]RotPosition rotationPosition = RotPosition.Right;
-    [SerializeField]RotDirection rotationDirection = RotDirection.Forward;
+    public RotAxis rotationAxis = RotAxis.X; 
+    public RotPosition rotationPosition = RotPosition.Right;
+    public RotDirection rotationDirection = RotDirection.Forward;
 
     void Start()
     {
