@@ -11,7 +11,7 @@ public class RubbleManager : MonoBehaviour
     private GameObject playerCamera;
     public GameObject Enemy;
     public float curvature;
-    private float catchTime = 0f;
+    public float catchTime = 0f;
     public float catchTimeSum = 2f;
     private int rubbleSetNum;
     private Vector3 rubbleSet;
@@ -109,17 +109,7 @@ public class RubbleManager : MonoBehaviour
                 transform.position = Vector3.Lerp(shootPosition, hitPosition, persent);
                 
                 if(hitPosition == transform.position)
-                {
-                    
-                    if(Hit.collider.tag == "Enemy")
-                    {
-                        enemyScript.HP -= catchTime * 10;
-                        enemyModel.GetComponent<ControlClockMonster>().color -= Color.cyan;
-                    }
-
-                    if(Hit.collider.tag == "BlueCube")
-                        tutoSctipt.hitBlueCube = true;
-                    
+                {   
                     hitFlag = true;
                     rubbleStatus = RubbleStatus.Wait;
                 }
@@ -192,7 +182,7 @@ public class RubbleManager : MonoBehaviour
             catchTime = 0f;
             rubbleSetNum = (int)Mathf.Floor(Random.value * 4 + 1);
             SESource.PlayOneShot(SEcall);
-        }else if((XBoxInputManager.Instance.XBoxInputAxis(XBoxAxisCode.RTrigger) < -0.9 && !Input.GetMouseButton(0)) && rubbleStatus != RubbleStatus.Wait)
+        }else if((XBoxInputManager.Instance.XBoxInputAxis(XBoxAxisCode.RTrigger) < 0.9 && !Input.GetMouseButton(0)) && rubbleStatus != RubbleStatus.Wait)
         {
             rubbleStatus = RubbleStatus.Shoot;
         }

@@ -198,4 +198,17 @@ public class EnemyScript : MonoBehaviour
         nowStatus = EnemyStatus.Wait;
         MaxHP = HP;
     }
+
+    void OnTriggerEnter(Collider collider)
+    {
+        if(collider.transform.tag == "Rubble")
+        {
+            RubbleManager script = collider.GetComponent<RubbleManager>();
+            if(script.rubbleStatus == RubbleManager.RubbleStatus.Shoot || script.rubbleStatus == RubbleManager.RubbleStatus.Wait){
+                HP -= script.catchTime * 5f;
+                enemyModel.GetComponent<ControlClockMonster>().color -= Color.cyan;
+            }
+        }
+        
+    }
 }
