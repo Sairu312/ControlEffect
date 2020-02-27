@@ -35,6 +35,9 @@ QuickGameですぐにボス戦を遊ぶことができます．
 
 ## プレイ動画
 プレイ動画(19/1/25)
+
 https://youtu.be/JG5bdZ_oTtc 
+
 技術紹介動画
+
 https://youtu.be/Tl6eUJOiy2I 
