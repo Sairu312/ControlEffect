@@ -130,9 +130,16 @@ public class PlayerManager : MonoBehaviour
         //Debug.Log("tag : " + collider.gameObject.tag);
         if(!defenseFlag)
         {
-            HP -= 24;
-            if(collider.gameObject.CompareTag("Enemy"))bumpPower = 30f;
-            if(collider.gameObject.CompareTag("Arm"))bumpPower = 30f;
+            if(collider.gameObject.CompareTag("Enemy"))
+            {
+                bumpPower = 30f;
+                HP -= 24;
+            }
+            if(collider.gameObject.CompareTag("Arm"))
+            {
+                bumpPower = 30f;
+                HP -= 24;
+            }
         }
         hukitobasi(collider.gameObject,bumpPower);
     }
