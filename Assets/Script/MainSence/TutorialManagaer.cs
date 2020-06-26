@@ -151,12 +151,16 @@ public class TutorialManagaer : MonoBehaviour
                 break;
 
             case 6:
-                if(XBoxInputManager.Instance.XBoxInputButton(XBoxButtonCode.B) || Input.GetKeyDown(KeyCode.E))telopNum = 7;
+                if(XBoxInputManager.Instance.XBoxInputButton(XBoxButtonCode.B) || Input.GetKeyDown(KeyCode.E))telopNum = 65;
                 
                 telop.text = "今日は赤色のようだね";
                 subTelop.text = "右トリガーを離して飛ばす\nBボタン(E)で進む";
                 break;
-
+            case 65:
+                if(XBoxInputManager.Instance.XBoxInputButton(XBoxButtonCode.LB) || Input.GetKeyDown(KeyCode.Q))telopNum = 7;
+                telop.text = "いつもの友達はどうしたんだい？";
+                subTelop.text = "LBボタン(Qキー)でシールドをはる";
+                break;
             case 7:
                 if(XBoxInputManager.Instance.XBoxInputButton(XBoxButtonCode.B) || Input.GetKeyDown(KeyCode.E))telopNum = 8;
                 telop.text = "今日の実験は\nオブジェクト049とのクロステストだ";

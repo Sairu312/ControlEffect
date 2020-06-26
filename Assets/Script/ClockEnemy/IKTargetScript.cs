@@ -24,7 +24,7 @@ public class IKTargetScript : MonoBehaviour
 
     void OnTriggerEnter(Collider collider)
     {
-        if(collider.gameObject.tag == "Floor")
+        if(collider.gameObject.tag == "Floor" || collider.gameObject.tag == "RiseBlock")
         {
             //Debug.Log(collider.gameObject.name);
             enemyScript.tipHitFlag = true;

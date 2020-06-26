@@ -136,11 +136,12 @@ public class EnemyScript : MonoBehaviour
     //突き(攻撃)
     void Thrust(float thrustTime,float motionTime)
     {
-        if(!tipHitFlag && thrustTime - countTime > 0)
+        //
+        if(!tipHitFlag && thrustTime > countTime)
         {
             IKtarget1.transform.position = Vector3.Slerp(originPosition,thrustPosition,countTime/thrustTime);
         }
-        else if(motionTime - countTime > 0f)
+        else if(motionTime > countTime)
         {
             if(!tipHitFlag)
             {
@@ -156,7 +157,7 @@ public class EnemyScript : MonoBehaviour
     {
         tipHitFlag = false;
         if(motionTime > countTime)
-            IKtarget1.transform.position = Vector3.Slerp(thrustPosition,originPosition,countTime/motionTime);
+            IKtarget1.transform.position = Vector3.Slerp(IKtarget1.transform.position,originPosition,countTime/motionTime);
         else nowStatus = EnemyStatus.Wait;
 
     }
@@ -197,5 +198,18 @@ public class EnemyScript : MonoBehaviour
         BreakSource.enabled = false;
         nowStatus = EnemyStatus.Wait;
         MaxHP = HP;
+    }
+
+    void OnTriggerEnter(Collider collider)
+    {
+        if(collider.transform.tag == "Rubble")
+        {
+            RubbleManager script = collider.GetComponent<RubbleManager>();
+            if(script.rubbleStatus == RubbleManager.RubbleStatus.Shoot || script.rubbleStatus == RubbleManager.RubbleStatus.Wait){
+                HP -= script.catchTime * 5f;
+                enemyModel.GetComponent<ControlClockMonster>().color -= Color.cyan;
+            }
+        }
+        
     }
 }

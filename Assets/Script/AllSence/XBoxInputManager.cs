@@ -37,47 +37,47 @@ public class XBoxInputManager : SingletonMonoBehaviour<XBoxInputManager>
         switch(buttonCode){
             #if UNITY_STANDALONE_WIN
                 case XBoxButtonCode.A:
-                    return Input.GetKeyDown("joystick button 0");
+                    return Input.GetKey("joystick button 0");
                 case XBoxButtonCode.B:
-                    return Input.GetKeyDown("joystick button 1");
+                    return Input.GetKey("joystick button 1");
                 case XBoxButtonCode.X:
-                    return Input.GetKeyDown("joystick button 2");
+                    return Input.GetKey("joystick button 2");
                 case XBoxButtonCode.Y:
-                    return Input.GetKeyDown("joystick button 3");
+                    return Input.GetKey("joystick button 3");
                 case XBoxButtonCode.LB:
                     return Input.GetKey("joystick button 4");
                 case XBoxButtonCode.RB:
-                    return Input.GetKeyDown("joystick button 5");
+                    return Input.GetKey("joystick button 5");
                 case XBoxButtonCode.Back:
-                    return Input.GetKeyDown("joystick button 6");
+                    return Input.GetKey("joystick button 6");
                 case XBoxButtonCode.Start:
-                    return Input.GetKeyDown("joystick button 7");
+                    return Input.GetKey("joystick button 7");
                 case XBoxButtonCode.LStickClick:
-                    return Input.GetKeyDown("joystick button 8");
+                    return Input.GetKey("joystick button 8");
                 case XBoxButtonCode.RStickClick:
-                    return Input.GetKeyDown("joystick button 9");
+                    return Input.GetKey("joystick button 9");
 
             #else
                 case XBoxButtonCode.A:
-                    return Input.GetKeyDown("joystick button 16");
+                    return Input.GetKey("joystick button 16");
                 case XBoxButtonCode.B:
-                    return Input.GetKeyDown("joystick button 17");
+                    return Input.GetKey("joystick button 17");
                 case XBoxButtonCode.X:
-                    return Input.GetKeyDown("joystick button 18");
+                    return Input.GetKey("joystick button 18");
                 case XBoxButtonCode.Y:
-                    return Input.GetKeyDown("joystick button 19");
+                    return Input.GetKey("joystick button 19");
                 case XBoxButtonCode.LB:
                     return Input.GetKey("joystick button 13");
                 case XBoxButtonCode.RB:
-                    return Input.GetKeyDown("joystick button 14");
+                    return Input.GetKey("joystick button 14");
                 case XBoxButtonCode.Back:
-                    return Input.GetKeyDown("joystick button 10");
+                    return Input.GetKey("joystick button 10");
                 case XBoxButtonCode.Start:
-                    return Input.GetKeyDown("joystick button 9");
+                    return Input.GetKey("joystick button 9");
                 case XBoxButtonCode.LStickClick:
-                    return Input.GetKeyDown("joystick button 11");
+                    return Input.GetKey("joystick button 11");
                 case XBoxButtonCode.RStickClick:
-                    return Input.GetKeyDown("joystick button 12");
+                    return Input.GetKey("joystick button 12");
             #endif
         }
         return false;
