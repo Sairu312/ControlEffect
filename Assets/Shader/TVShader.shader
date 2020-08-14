@@ -14,6 +14,8 @@ Shader "Unlit/TVShader"
 		_RGBNoise("RGBNoise", Range(0, 1)) = 0
 		_ScanLineTail("Tail", Float) = 0.5
 		_ScanLineSpeed("TailSpeed", Float) = 100
+        _GreenOffset("GreenOfset", Float) = 0.01
+        _BlueOffset("BlueOffset",Float) = 0.02
     }
     SubShader
     {
@@ -69,6 +71,8 @@ Shader "Unlit/TVShader"
 			float _RGBNoise;
 			float _ScanLineTail;
 			float _ScanLineSpeed;
+            float _GreenOffset;
+            float _BlueOffset;
 
             fixed4 frag (v2f i) : SV_Target
             {
@@ -90,8 +94,8 @@ Shader "Unlit/TVShader"
 
                 //色収差
                 col.r = tex2D(_MainTex, texUV).r;
-				col.g = tex2D(_MainTex, texUV - float2(0.01, 0)).g;
-				col.b = tex2D(_MainTex, texUV - float2(0.02, 0)).b;
+				col.g = tex2D(_MainTex, texUV - float2(_GreenOffset, 0)).g;
+				col.b = tex2D(_MainTex, texUV - float2(_BlueOffset, 0)).b;
 
                 //ランダムで帯状にRGBランダムノイズを走らせる
 				if (rand((rand(floor(texUV.y * 500) + _Time.y) - 0.5) + _Time.y) < _RGBNoise)

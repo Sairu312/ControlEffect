@@ -23,7 +23,19 @@ public class PostEffect : MonoBehaviour
     [Range(-10, 10)]
     float scanLineSpeed = 10;
     public float ScanLineSpeed { get { return scanLineSpeed; } set { scanLineSpeed = value; } }
+
+
+    [SerializeField]
+    [Range(0,0.1f)]
+    float greenOffset = 0.01f;
+    public float GreenOffset { get {return greenOffset;} set { greenOffset = value;}}
  
+    [SerializeField]
+    [Range(0,0.1f)]
+    float blueOffset = 0.02f;
+    public float BlueOffset { get {return blueOffset;} set { blueOffset = value;}}
+ 
+
 
    //レンダリングが完了したタイミングでOnRenderImageが呼ばれる
    //sourceはレンダリング結果，destは編集後の画像を入れる
@@ -31,6 +43,8 @@ public class PostEffect : MonoBehaviour
         material.SetFloat("_RGBNoise", rgbNoise);
         material.SetFloat("_ScanLineSpeed", scanLineSpeed);
         material.SetFloat("_ScanLineTail", scanLineTail);
+        material.SetFloat("_GreenOffset",greenOffset);
+        material.SetFloat("_BlueOffset",blueOffset);
         Graphics.Blit(source, dest, material);//1を3を適用して2にコピー
    }
 }
