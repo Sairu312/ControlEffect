@@ -96,6 +96,7 @@ LightmapSettings:
     m_PVRFilteringAtrousPositionSigmaAO: 1
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
+    m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
   m_UseShadowmask: 1
 --- !u!196 &4
@@ -274,11 +275,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 3669268899406439489, guid: 2a60e04b69dce4def93e5deadb554ab2,
-        type: 3}
-      propertyPath: m_Name
-      value: Stage
-      objectReference: {fileID: 0}
     - target: {fileID: 3669268899406439488, guid: 2a60e04b69dce4def93e5deadb554ab2,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -334,6 +330,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3669268899406439489, guid: 2a60e04b69dce4def93e5deadb554ab2,
+        type: 3}
+      propertyPath: m_Name
+      value: Stage
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2a60e04b69dce4def93e5deadb554ab2, type: 3}
 --- !u!1 &821892916
@@ -361,8 +362,9 @@ Light:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 821892916}
   m_Enabled: 1
-  serializedVersion: 9
+  serializedVersion: 10
   m_Type: 1
+  m_Shape: 0
   m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
   m_Intensity: 1
   m_Range: 10
@@ -527,6 +529,8 @@ MonoBehaviour:
   rgbNoise: 0.01
   scanLineTail: 1.5
   scanLineSpeed: -0.1
+  greenOffset: 0.01
+  blueOffset: 0.02
 --- !u!1 &996531738
 GameObject:
   m_ObjectHideFlags: 0
@@ -552,8 +556,9 @@ Light:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 996531738}
   m_Enabled: 1
-  serializedVersion: 9
+  serializedVersion: 10
   m_Type: 2
+  m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Intensity: 1
   m_Range: 500
@@ -671,6 +676,7 @@ MonoBehaviour:
   m_Material: {fileID: 2100000, guid: 35d4220b130264389a8e943610e33b45, type: 3}
   m_Color: {r: 1, g: 0.10365854, b: 0, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -763,6 +769,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 0, g: 0, b: 0, a: 0}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -837,6 +844,7 @@ MonoBehaviour:
   m_Material: {fileID: 2100000, guid: 35d4220b130264389a8e943610e33b45, type: 3}
   m_Color: {r: 0.6666667, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -1113,6 +1121,7 @@ MonoBehaviour:
   m_Material: {fileID: 2100000, guid: 35d4220b130264389a8e943610e33b45, type: 3}
   m_Color: {r: 1, g: 0, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -1162,11 +1171,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 3092347802280104070, guid: 5373b4308005947b0a1bf589dbb9be40,
-        type: 3}
-      propertyPath: m_Name
-      value: AudioManager
-      objectReference: {fileID: 0}
     - target: {fileID: 3092347802280104064, guid: 5373b4308005947b0a1bf589dbb9be40,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1222,6 +1226,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3092347802280104070, guid: 5373b4308005947b0a1bf589dbb9be40,
+        type: 3}
+      propertyPath: m_Name
+      value: AudioManager
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5373b4308005947b0a1bf589dbb9be40, type: 3}
 --- !u!1001 &3457230952269398946
@@ -1231,11 +1240,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 3457230951781517500, guid: dd1ea78c119864d62abc2a0a1dfab8d6,
-        type: 3}
-      propertyPath: m_Name
-      value: GameManager
-      objectReference: {fileID: 0}
     - target: {fileID: 3457230951781517442, guid: dd1ea78c119864d62abc2a0a1dfab8d6,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1290,6 +1294,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3457230951781517500, guid: dd1ea78c119864d62abc2a0a1dfab8d6,
+        type: 3}
+      propertyPath: m_Name
+      value: GameManager
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dd1ea78c119864d62abc2a0a1dfab8d6, type: 3}
