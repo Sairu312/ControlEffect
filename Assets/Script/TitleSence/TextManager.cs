@@ -77,7 +77,7 @@ public class TextManager : MonoBehaviour
             if(select == 0)
             SceneManager.LoadScene("MainScene");
             else
-            SceneManager.LoadScene("StoryScene");
+            SceneManager.LoadScene("OpeningMove");
         }
     }
 }

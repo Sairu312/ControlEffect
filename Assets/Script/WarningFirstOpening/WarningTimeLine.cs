@@ -12,6 +12,8 @@ public class WarningTimeLine : MonoBehaviour
     public Text warning2;
     public Text warning3;
     public Text warning4;
+    public Text pressAnyKey1;
+    public Text pressAnyKey2;
     public GameObject movie;
     VideoPlayer videoPlayer;
     RawImage rawImage;
@@ -43,7 +45,7 @@ public class WarningTimeLine : MonoBehaviour
          yield return new WaitForSeconds(1.0f);
          StartCoroutine("WarningFadeIn");
          yield return new WaitForSeconds(1.0f);
-         yield return new WaitWhile(() => !flag);
+         yield return new WaitWhile(() => !Input.anyKey);
          StartCoroutine("WarningFadeOut");
          yield return new WaitForSeconds(0.5f);
          Debug.Log(dataSave.saveData.FirstSaveFlag);
@@ -59,7 +61,7 @@ public class WarningTimeLine : MonoBehaviour
             rawImage.color = Color.clear;
             StartCoroutine("Warning2FadeIn");
             yield return new WaitForSeconds(1.0f);
-            yield return new WaitWhile(() => flag);
+            yield return new WaitWhile(() => !Input.anyKey);
             StartCoroutine("Warning2FadeOut");
          }
          yield return new WaitForSeconds(1.0f);
@@ -74,6 +76,7 @@ public class WarningTimeLine : MonoBehaviour
         {
             warning1.color = tmp;
             warning2.color = tmp;
+            pressAnyKey1.color = tmp;
             tmp = new Color(tmp.r,tmp.g,tmp.b,tmp.a + fadeSpeed　* Time.deltaTime);
             yield return null;
         }
@@ -86,6 +89,7 @@ public class WarningTimeLine : MonoBehaviour
         {
             warning1.color = tmp;
             warning2.color = tmp;
+            pressAnyKey1.color = tmp;
             tmp = new Color(tmp.r,tmp.g,tmp.b,tmp.a - fadeSpeed　* Time.deltaTime);
             yield return null;
         }
@@ -98,6 +102,7 @@ public class WarningTimeLine : MonoBehaviour
         {
             warning3.color = tmp;
             warning4.color = tmp;
+            pressAnyKey2.color = tmp;
             tmp = new Color(tmp.r,tmp.g,tmp.b,tmp.a + fadeSpeed　* Time.deltaTime);
             yield return null;
         }
@@ -110,6 +115,7 @@ public class WarningTimeLine : MonoBehaviour
         {
             warning3.color = tmp;
             warning4.color = tmp;
+            pressAnyKey2.color = tmp;
             tmp = new Color(tmp.r,tmp.g,tmp.b,tmp.a - fadeSpeed　* Time.deltaTime);
             yield return null;
         }

@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEngine.SceneManagement;
 
 public class OpeningMovieManager : MonoBehaviour
 {
-    private float time = 0f;
+    public float time = 0f;
+    public float finishTime = 100f;
     public BezieToolScript[] bezieSctipts = Array.Empty<BezieToolScript>();
     public float[] startTimes;
     private bool startFlag = true;
@@ -17,7 +19,7 @@ public class OpeningMovieManager : MonoBehaviour
         //StartCoroutine("bezieTimeLine");
     }
 
-/*
+    /*コルーチンでのループでの処理は配列内の順番や同時の処理がしづらいので保留
     IEnumerator bezieTimeLine()
     {
         float beforeTime = 0f;
@@ -28,7 +30,7 @@ public class OpeningMovieManager : MonoBehaviour
             beforeTime = startTimes[i];
         }
     }
-*/
+ */
 
     // Update is called once per frame
     void Update()
@@ -37,8 +39,13 @@ public class OpeningMovieManager : MonoBehaviour
         for(int i = 0; i < bezieSctipts.Length;i++)
         {
             if(time > startTimes[i] && startTimes[i] > time - 1f)bezieSctipts[i].flag = true;
+            if(time > finishTime){
+                GameObject audioManager = GameObject.Find("AudioManager");
+                AudioSource audioSource = audioManager.GetComponent<AudioSource>();
+                audioSource.mute = false;
+                SceneManager.LoadScene("StoryScene");
+            }
         }
         time += Time.deltaTime;
     }
-
 }

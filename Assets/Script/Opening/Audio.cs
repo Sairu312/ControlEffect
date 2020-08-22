@@ -14,6 +14,9 @@ public class Audio : MonoBehaviour
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
+        GameObject audioManager = GameObject.Find("AudioManager");
+        AudioSource audioSourceBGM = audioManager.GetComponent<AudioSource>();
+        audioSourceBGM.mute = true;
         StartCoroutine("RingSE");
     }
 
