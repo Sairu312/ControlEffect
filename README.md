@@ -13,6 +13,10 @@ ControlEffect_1._for_Winをダウンロードし，exeファイルを実行し�
 
 ControlEffect_1._for_Macをダウンロードし，appファイルを実行してください．
 
+(mac版でのXBOXコントローラーの使用は360controllerが必要となります）
+
+(今後のバージョンでmac版が対応しない可能性があります）
+
 ## 操作方法
 
 ||Xbox360コントローラー|キーボード＆マウス|
