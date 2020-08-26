@@ -2,6 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum ScreenMode
+{
+    fullScreen,
+    windowScreen
+}
+
 static class resolution
 {
     public static readonly Vector2Int res854x480 = new Vector2Int(854,480);
@@ -17,21 +23,14 @@ static class resolution
 public class OptionsStatus
 {
     private float masterVolume;
-    private float xSensitivity;
-    private float ySensitivity;
+    private ScreenMode screenMode = ScreenMode.fullScreen;
+    private Vector2Int resolution;
     private float brightness;
 }
 
 public class OptionScript : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
+    void ReflectSetting()
     {
         
     }
